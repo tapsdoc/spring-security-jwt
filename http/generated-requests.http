@@ -1,0 +1,175 @@
+###
+POST http://localhost:8080/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "Root",
+  "lastName": "Doc",
+  "email": "root@gmail.com",
+  "password": "1234"
+}
+
+> {%
+	const {accessToken} = response.body;
+	client.global.set("auth_token", accessToken);
+%}
+
+<> 2024-02-28T133811.200.json
+<> 2024-02-28T125136.500.json
+
+###
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "root@gmail.com",
+  "password": "1234"
+}
+
+> {%
+	const {accessToken} = response.body;
+	client.global.set("auth_token", accessToken);
+%}
+
+
+###
+POST http://localhost:8080/api/v1/book/save
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "title": "Object Oriented Programming in Java",
+  "author": "Taps"
+}
+
+<> 2024-02-28T134419.200.json
+<> 2024-02-28T130158.403.json
+<> 2024-02-28T125815.200.json
+<> 2024-02-28T125138-1.200.json
+<> 2024-02-28T124926.403.json
+
+###
+GET http://localhost:8080/api/v1/book
+Authorization: Bearer {{auth_token}}
+
+<> 2024-02-28T142121.200.json
+<> 2024-02-28T140700.200.json
+<> 2024-02-28T140450.403.json
+<> 2024-02-28T135702.403.json
+<> 2024-02-28T134426.403.json
+<> 2024-02-28T133942.403.json
+<> 2024-02-28T125138-2.200.json
+
+###
+POST http://localhost:8080/api/v1/auth/logout
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{}
+
+###
+POST http://localhost:8080/api/v1/auth/refresh-token
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer {{auth_token}}
+
+###
+PATCH http://localhost:8080/api/v1/user/change-password
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "currentPassword": "1234",
+  "newPassword": "taps1234",
+  "confirmationPassword": "taps123"
+}
+
+<> 2024-02-28T130755.500.json
+<> 2024-02-28T125140.403.json
+<> 2024-02-28T124849.500.json
+<> 2024-02-28T124738.500.json
+
+###
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "tapsdoc@gmail.com",
+  "password": "1234"
+}
+
+> {%
+	const {accessToken} = response.body;
+	client.global.set("new-auth_token", accessToken);
+%}
+
+
+###
+POST http://localhost:8080/api/v1/book/save
+Content-Type: application/json
+Authorization: Bearer {{new-auth_token}}
+
+{
+  "title": "Object Oriented Programming in Java",
+  "author": "Taps"
+}
+
+###
+PUT http://localhost:8080/api/v1/book/update/1
+Content-Type: application/json
+Authorization: Bearer {{new-auth_token}}
+
+{
+  "author": "Tapiwa",
+  "title": "Object Oriented Programming"
+}
+
+###
+GET http://localhost:8080/api/v1/book
+Authorization: Bearer {{new-auth_token}}
+
+
+###
+POST http://localhost:8080/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "Taps",
+  "lastName": "Doc",
+  "email": "tapsdoc@gmail.com",
+  "password": "1234"
+}
+
+> {%
+	const {accessToken} = response.body;
+	client.global.set("new-auth_token", accessToken);
+%}
+
+###
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "tapsdoc@gmail.com",
+  "password": "1234"
+}
+
+> {%
+	const {accessToken} = response.body;
+	client.global.set("new-auth_token", accessToken);
+%}
+
+###
+POST http://localhost:8080/api/v1/students
+Authorization: Bearer {{new-auth_token}}
+
+
+###
+POST http://localhost:8080/api/v1/students/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: Bearer {{new-auth_token}}
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="students.csv"
+
+< students.csv
+--WebAppBoundary--

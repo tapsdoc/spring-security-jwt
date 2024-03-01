@@ -1,0 +1,29 @@
+spring:
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spring_security
+    username: tapsdoc
+    password:
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+application:
+  security:
+    jwt:
+      secret-key: 504a7552deaf290ae8e59574956d984fac6e05b831312288a78ae244b0660d55
+      expiration: 86400000
+      refresh-token:
+        expiration: 604800000
